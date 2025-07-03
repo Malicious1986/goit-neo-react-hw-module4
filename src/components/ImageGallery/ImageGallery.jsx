@@ -1,7 +1,9 @@
+import { memo } from 'react'
+
 import styles from './ImageGallery.module.css'
 import ImageCard from "../ImageCard/ImageCard";
 
-export default function ImageGallery({ images, onSelect }) {
+function  ImageGallery({ images, onSelect }) {
   return (
     <ul className={styles.container}>
       {images.map((image) => (
@@ -12,3 +14,5 @@ export default function ImageGallery({ images, onSelect }) {
     </ul>
   );
 }
+
+export default memo(ImageGallery);

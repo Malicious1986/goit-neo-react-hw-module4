@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { ClipLoader } from "react-spinners";
 
@@ -58,13 +58,14 @@ function App() {
     }
   };
 
-  const onSearch = async () => {
-    if (query === lastQueryRef.current) return;
-    lastQueryRef.current = query;
-
+  const onSearch = async (searchQuery) => {
+    if (searchQuery === lastQueryRef.current) return;
+    lastQueryRef.current = searchQuery;
+    setQuery(searchQuery);
+    
     try {
       reset();
-      const { data } = await get(query);
+      const { data } = await get(searchQuery);
       setResults(data.results);
       setTotalPages(data.total_pages);
     } catch (err) {
@@ -74,10 +75,10 @@ function App() {
     }
   };
 
-  const onSelectImage = (image) => {
+  const onSelectImage = useCallback((image) => {
     setCurrentImage(image);
     setModalIsOpen(true);
-  };
+  }, []);
 
   const onCloseModal = () => {
     setModalIsOpen(false);
@@ -85,7 +86,7 @@ function App() {
 
   return (
     <div className="container">
-      <SearchBar onSearch={onSearch} query={query} setQuery={setQuery} />
+      <SearchBar onSearch={onSearch} />
       <div className="wrapper">
         {results.length > 0 && !error && (
           <ImageGallery onSelect={onSelectImage} images={results} />

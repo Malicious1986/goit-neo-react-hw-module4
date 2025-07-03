@@ -3,15 +3,14 @@ import { IoSearchOutline } from "react-icons/io5";
 
 import styles from "./SearchBar.module.css";
 
-export default function SearchBar({ onSearch, query, setQuery }) {
+export default function SearchBar({ onSearch }) {
   const onSubmit = (e) => {
     e.preventDefault();
-    const form = e.target;
+    const query = e.target.elements.search.value
     if (!query) {
       return toast.error("Add search!");
     }
     onSearch(query);
-    form.reset();
   };
   return (
     <header>
@@ -25,8 +24,6 @@ export default function SearchBar({ onSearch, query, setQuery }) {
             autoFocus
             placeholder="Search images and photos"
             name="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
           />
           <button className={styles.submit} type="submit">
             <IoSearchOutline />
